@@ -1,34 +1,32 @@
-import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useUser } from "../hooks/useUser";
 
 export default function Home(){
-    const location = useLocation();
-    const user = location.state?.user;
-    
-    const [userLocations, setUserLocations] = useState([]);
+    const { user } = useUser();
+    const [userLocations, setUserLocations] = useState<any[]>([]);
 
+    // Fetch locations when user is ready
     useEffect(() => {
-    const fetchLocations = async () => {
+        const fetchLocations = async () => {
         if (!user?.id) return;
 
         const { data } = await axios.get(
-        `http://localhost:3000/api/locations/${user?.id}`
+            `http://localhost:3000/api/locations/${user.id}`
         );
 
         setUserLocations(data);
-    };
+        };
 
-    fetchLocations();
-    }, [user]);
+        fetchLocations();
+    }, [user?.id]);
+    console.log(userLocations);
 
-    console.log(userLocations)
     return(
         <div>
             <Navbar/>
-
-            <div className="overflow-x-auto">
+            <div className="flex items-center justify-center mt-5">
             <table className="table w-5xl border-2">
                 {/* head */}
                 <thead>

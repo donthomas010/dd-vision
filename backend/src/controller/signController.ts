@@ -2,7 +2,32 @@
 import type { Request, Response } from "express";
 import prisma from "../../config/prisma.ts";
 
-export const userLocation = async (req: Request, res: Response) =>{
+export const userUpdate = async (req: Request, res: Response) =>{
+    const userId = Number(req.params.id);
+    const{user, password, email} = req.body;
+    console.log({user, password, email});
+    try {
+        const updateUser = await prisma.login.update({
+            where: {
+                id: userId
+            },
+            data: {
+                user,
+                password,
+                email
+            }
+        })
+        console.log("Updated user", updateUser)
+        res.status(201).json(updateUser)
+    } catch (error) {
+        console.log("Error to update user:", error);
+        res.status(500).json({message: "Internal Error"})
+    }finally{
+        await prisma.$disconnect();
+    }
+}
+
+export const userLocation = async (req: Request, res: Response)  =>{
     try {
         const userId = Number(req.params.id);
         console.log({userId})

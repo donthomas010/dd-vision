@@ -19,12 +19,13 @@ export default function Login(){
             })
             console.log("login Success:",res.data);
 
+            localStorage.setItem(
+                "user",
+                JSON.stringify(res.data)
+            );
+
             // Redirect after successful login
-            navigate("/home", {
-            state: {
-                user: res.data,
-            },
-            });
+            navigate("/home");
         } catch (error) {
             console.log("Failed to login:", error);
         }

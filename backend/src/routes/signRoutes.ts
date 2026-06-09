@@ -1,5 +1,5 @@
 import express from "express";
-import { login, signup, userLocation } from "../controller/signController.ts";
+import { login, signup, userLocation, userUpdate } from "../controller/signController.ts";
 
 const signRouter = express.Router();
 
@@ -14,6 +14,8 @@ signRouter.post("/api/login", login);
 signRouter.post("/api/signup", signup);
 //user location
 signRouter.get("/api/locations/:id", userLocation);
+//user update
+signRouter.put("/api/locations/:id", userUpdate);
 
 
 export default signRouter;
