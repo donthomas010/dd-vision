@@ -1,5 +1,6 @@
 import express from "express";
 import signRouter from "./routes/signRoutes.ts";
+import visionRouter from "./routes/visionRoutes.ts"
 import dotenv from "dotenv";
 import cors from "cors";
 
@@ -15,6 +16,7 @@ const PORT = 3000;
 app.use(express.json());
 
 app.use("/", signRouter);
+app.use("/vision", visionRouter);
 
 app.get("/health", (req, res) => {
   res.json({ status: "OK" });

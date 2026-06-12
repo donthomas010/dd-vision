@@ -8,11 +8,12 @@ datasource db {
 }
 
 model login {
-  id       Int       @id @default(autoincrement())
-  user     String?   @db.VarChar(45)
-  password String?   @db.VarChar(45)
-  email    String?   @db.VarChar(45)
-  location location?
+  id          Int           @id @default(autoincrement())
+  user        String?       @db.VarChar(45)
+  password    String?       @db.VarChar(45)
+  email       String?       @db.VarChar(45)
+  location    location?
+  sensor_name sensor_name[]
 }
 
 model location {
@@ -20,4 +21,24 @@ model location {
   locationName String? @db.VarChar(45)
   id_login     Int
   login        login   @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "id_login")
+}
+
+model sensor_name {
+  id            Int             @id @default(autoincrement())
+  name          String          @db.VarChar(45)
+  id_user       Int?
+  login         login?          @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "id_user")
+  sensor_values sensor_values[]
+
+  @@index([id_user], map: "id_user_idx")
+}
+
+model sensor_values {
+  id          Int         @id @default(autoincrement())
+  id_sensor   Int
+  datetime    DateTime    @db.DateTime(0)
+  value       Int
+  sensor_name sensor_name @relation(fields: [id_sensor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "id_sensorname")
+
+  @@index([id_sensor], map: "id_sensorname_idx")
 }
