@@ -24,7 +24,7 @@ export const getSensorValues = async (req: Request, res: Response) => {
 
 //get all vision names with the user id
 export const getVisionNames = async(req: Request, res: Response) =>{
-    const userId = Number(req.params.id);
+    const userId = req.user.id;
     try {
         const allVisionNames = await prisma.sensor_name.findMany({
             where: {

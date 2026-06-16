@@ -17,15 +17,21 @@ export default function Login(){
                 user,
                 password
             })
-            console.log("login Success:",res.data);
+            console.log("login Success:",res.data.token);
 
             localStorage.setItem(
-                "user",
-                JSON.stringify(res.data)
+                "token",
+                res.data.token
             );
 
-            // Redirect after successful login
-            navigate("/home");
+            if (res.data.token) {
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("username", user);
+                navigate("/home");
+                } else {
+                console.log("No token received");
+            }
+            //navigate("/home");
         } catch (error) {
             console.log("Failed to login:", error);
         }

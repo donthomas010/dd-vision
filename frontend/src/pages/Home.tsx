@@ -1,26 +1,30 @@
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useUser } from "../hooks/useUser";
 
 export default function Home(){
-    const { user } = useUser();
+    const token = localStorage.getItem("token");
     const [userLocations, setUserLocations] = useState<any[]>([]);
 
     // Fetch locations when user is ready
     useEffect(() => {
         const fetchLocations = async () => {
-        if (!user?.id) return;
+        if (!token) return;
 
         const { data } = await axios.get(
-            `http://localhost:3000/api/locations/${user.id}`
+            `http://localhost:3000/api/locations/`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
         );
 
         setUserLocations(data);
         };
 
         fetchLocations();
-    }, [user?.id]);
+    }, []);
     console.log(userLocations);
 
     return(

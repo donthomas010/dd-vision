@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
-import { useUser } from "../hooks/useUser";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar(){
 
-        const {user} = useUser();
+        const username = localStorage.getItem("username");
+        const navigate = useNavigate();
+
+        const handleLogout = () => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("username");
+            navigate("/login")
+        }
     return(
         <header>
             <div className="navbar bg-base-100 shadow-sm">
@@ -14,11 +21,11 @@ export default function Navbar(){
                 <ul className="menu menu-horizontal px-1">
                     <li><Link to="/home">Home</Link></li>
                     <li><Link to="/vision">Vision</Link></li>
-                    <li><Link to="/profile">profile</Link></li>
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn">Welcome {user?.user}</a>
+                <a className="btn">Welcome {username}</a>
+                <button onClick={handleLogout}>Logout</button>
             </div>
             </div>
         </header>

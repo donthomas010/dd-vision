@@ -1,6 +1,7 @@
 
-import type { Request, Response } from "express";
+import type { Request, Response, Next } from "express";
 import prisma from "../../config/prisma.ts";
+import jwt from "jsonwebtoken";
 
 export const userUpdate = async (req: Request, res: Response) =>{
     const userId = Number(req.params.id);
@@ -29,7 +30,7 @@ export const userUpdate = async (req: Request, res: Response) =>{
 
 export const userLocation = async (req: Request, res: Response)  =>{
     try {
-        const userId = Number(req.params.id);
+        const userId = req.user.id;
         console.log({userId})
         const locations = await prisma.location.findMany({
             where:{
@@ -42,8 +43,6 @@ export const userLocation = async (req: Request, res: Response)  =>{
     } catch (error) {
         console.log("Error to userLocation:", error);
         res.status(500).json({message: "Internal Error"})
-    }finally{
-        await prisma.$disconnect();
     }
 }
 
@@ -62,7 +61,14 @@ export const login = async (req: Request, res: Response) =>{
             res.status(400).json({message: "login failed, try again"});
             return;
         }
-        res.status(200).json(loginUser);
+
+        const token = jwt.sign(
+            loginUser,
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
+        );
+        
+        res.status(200).json({token});
         
     } catch (error) {
         console.log("Error to login:", error);
@@ -95,4 +101,11 @@ export const signup = async(req: Request, res: Response) =>{
         await prisma.$disconnect();
     }
 
+}
+
+export const profile =  (req: Request, res: Response) => {
+    res.json({
+        message: "Welcome",
+        user: req.user
+    });
 }

@@ -5,18 +5,24 @@ import axios from "axios";
 import { GoogleChart } from "../components/GoogleChart";
 
 export default function Vision(){
-    const {user} = useUser();
+    const token = localStorage.getItem("token");
 
     const [sensors, setSenors] = useState([]);
     const [sensorId, setSensorId] = useState("");
     const [chartData, setChartData] = useState([]);
 
     useEffect(() =>{
-        if(!user) return;
+        if(!token) return;
 
         const fetchSensors = async () =>{
             try {
-                const {data} = await axios.get(`http://localhost:3000/vision/api/sensors/${user?.id}`);
+                const {data} = await axios.get(`http://localhost:3000/vision/api/sensors`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
                 setSenors(data);
             } catch (error) {
                 console.log("Failed to fetch Sensors", error);
@@ -24,7 +30,7 @@ export default function Vision(){
         }
 
         fetchSensors();
-    },[user?.id]);
+    },[token]);
 
 
 
