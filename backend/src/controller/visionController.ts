@@ -41,3 +41,29 @@ export const getVisionNames = async(req: Request, res: Response) =>{
     }
     
 }
+
+//add new sensors'
+export const addSensor = async(req: Request, res: Response) =>{
+    // console.log(req.user.id);
+    // res.status(200).json({message: req.user.id});
+
+    try {
+        const {sensorName} = req.body;
+        const userId = req.user.id;
+        console.log({sensorName});
+        const newSensor = await prisma.sensor_name.create({
+        data: {
+            name: sensorName,
+            id_user: userId,
+            }
+        })
+        console.log("New User created:", newSensor);
+        res.status(201).json(newSensor);
+        
+    } catch (error) {
+        console.log("Error to create new sensor:", error);
+        res.status(500).json({message: "Internal Error"})
+    } finally{
+        await prisma.$disconnect();
+    }
+}
