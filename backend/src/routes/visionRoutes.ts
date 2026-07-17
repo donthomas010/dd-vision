@@ -10,7 +10,7 @@ visionRouter.get("/", (req, res) =>{
 
 visionRouter.get("/api/sensors/", authenticateToken, getVisionNames);
 visionRouter.get("/api/sensor/:id", getSensorValues);
-visionRouter.get("/api/addSensor",  authenticateToken, addSensor)
+visionRouter.get("/api/addSensor/:sensorname",  authenticateToken, addSensor)
 
 
 export default visionRouter;

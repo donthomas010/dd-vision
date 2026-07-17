@@ -4,6 +4,7 @@ import Signup from "./pages/Signup"
 import Home from "./pages/Home"
 import Vision from "./pages/Vision"
 import Profile from "./pages/Profile"
+import AddSensor from "./pages/AddSensor"
 
 export default function App(){
   return(
@@ -15,6 +16,7 @@ export default function App(){
         <Route path="/home" element={<Home />}/>
         <Route path="/vision" element={<Vision />}/>
         <Route path="/profile" element={<Profile />}/>
+        <Route path="/addSensor" element={<AddSensor />}/>
       </Routes>
     </BrowserRouter>
   )

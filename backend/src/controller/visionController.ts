@@ -48,7 +48,7 @@ export const addSensor = async(req: Request, res: Response) =>{
     // res.status(200).json({message: req.user.id});
 
     try {
-        const {sensorName} = req.body;
+        const sensorName = String(req.params.sensorname);
         const userId = req.user.id;
         console.log({sensorName});
         const newSensor = await prisma.sensor_name.create({
